@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Bhai Hazir Hai | بھائی حاضر ہے</title>
+<meta name="description" content="Ghar baithay, hunarmand hazir — Mistri, Plumber, Electrician, Painter, Darzi aur bohat kuch, ek call ya WhatsApp message dur.">
+<meta name="theme-color" content="#1C1B19">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   BHAI HAZIR HAI — Design Tokens
+   ============================================================ */
+:root{
+  --ink:#1C1B19;
+  --ink-soft:#26241F;
+  --paper:#F3EEE3;
+  --paper-dim:#E8E1D0;
+  --amber:#E8A33D;
+  --amber-dark:#C9821F;
+  --rust:#B23A2E;
+  --steel:#3F5761;
+  --green:#4C7A5A;
+  --line:#D8CFB8;
+  --shadow: 0 10px 30px rgba(28,27,25,0.12);
+  --radius: 16px;
+  --font-display:'Oswald', sans-serif;
+  --font-body:'Inter', sans-serif;
+  --font-urdu:'Noto Nastaliq Urdu', serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:40px;
+}
+.urdu{font-family:var(--font-urdu);direction:rtl;}
+img,svg{display:block;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select{font-family:inherit;}
+a{color:inherit;text-decoration:none;}
+
+/* ============================================================
+   TOP STATUS BAR — blinking live indicator
+   ============================================================ */
+.topbar{
+  background:var(--ink);
+  color:var(--paper);
+  padding:8px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:12.5px;
+  letter-spacing:0.4px;
+  font-weight:500;
+}
+.blink-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--rust);
+  box-shadow:0 0 0 0 rgba(178,58,46,0.7);
+  animation:pulse 1.6s infinite;
+  flex-shrink:0;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(178,58,46,0.6);}
+  70%{box-shadow:0 0 0 9px rgba(178,58,46,0);}
+  100%{box-shadow:0 0 0 0 rgba(178,58,46,0);}
+}
+
+/* ============================================================
+   HEADER / NAV
+   ============================================================ */
+header{
+  background:var(--ink);
+  padding:18px 20px 26px;
+  color:var(--paper);
+}
+.nav-row{
+  max-width:1100px;margin:0 auto 22px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{width:42px;height:42px;flex-shrink:0;}
+.brand-text .en{
+  font-family:var(--font-display);font-weight:700;font-size:19px;
+  letter-spacing:1px;color:var(--paper);line-height:1;
+}
+.brand-text .ur{
+  font-family:var(--font-urdu);font-size:15px;color:var(--amber);line-height:1.6;
+}
+.list-btn{
+  background:var(--amber);color:var(--ink);
+  padding:10px 18px;border-radius:999px;
+  font-weight:700;font-size:13.5px;letter-spacing:0.3px;
+  display:flex;align-items:center;gap:6px;
+  transition:transform .15s ease, background .15s ease;
+}
+.list-btn:hover{background:var(--amber-dark);transform:translateY(-1px);}
+
+.hero{max-width:1100px;margin:0 auto;text-align:center;padding:18px 10px 4px;}
+.hero h1.ur{font-size:clamp(34px,7vw,58px);color:var(--amber);margin-bottom:6px;}
+.hero h1.en{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(22px,4.4vw,34px);letter-spacing:2px;
+  color:var(--paper);margin-bottom:14px;
+}
+.hero p{
+  color:#CFC9BC;font-size:15px;max-width:520px;margin:0 auto 26px;
+}
+.hero p .urdu{color:var(--paper);font-size:16px;display:block;margin-top:4px;}
+
+/* Search bar */
+.search-card{
+  max-width:760px;margin:0 auto;
+  background:var(--paper);
+  border-radius:var(--radius);
+  padding:14px;
+  display:flex;gap:10px;flex-wrap:wrap;
+  box-shadow:var(--shadow);
+}
+.search-card select, .search-card input{
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  font-size:14.5px;
+  background:#fff;
+  color:var(--ink);
+  flex:1;
+  min-width:150px;
+}
+.search-card select:focus, .search-card input:focus{outline:2px solid var(--amber);}
+.search-card button{
+  background:var(--rust);color:#fff;
+  padding:12px 26px;border-radius:10px;
+  font-weight:700;font-size:14.5px;
+  display:flex;align-items:center;gap:8px;
+  transition:background .15s ease;
+}
+.search-card button:hover{background:#96302a;}
+
+/* ============================================================
+   CATEGORY CHIPS
+   ============================================================ */
+.categories{
+  max-width:1100px;margin:26px auto 8px;padding:0 16px;
+  display:flex;gap:12px;overflow-x:auto;
+  scrollbar-width:none;
+}
+.categories::-webkit-scrollbar{display:none;}
+.cat-chip{
+  flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:14px 16px;
+  background:#fff;
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  min-width:92px;
+  transition:all .15s ease;
+}
+.cat-chip svg{width:26px;height:26px;color:var(--steel);}
+.cat-chip .en{font-size:11.5px;font-weight:600;color:var(--ink);}
+.cat-chip .ur{font-size:12.5px;color:#666;}
+.cat-chip.active{
+  background:var(--ink);border-color:var(--ink);
+}
+.cat-chip.active svg{color:var(--amber);}
+.cat-chip.active .en{color:var(--paper);}
+.cat-chip.active .ur{color:var(--amber);}
+.cat-chip:hover{transform:translateY(-2px);border-color:var(--amber);}
+
+/* ============================================================
+   LISTINGS
+   ============================================================ */
+.listings-section{max-width:1100px;margin:30px auto;padding:0 16px;}
+.listings-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;flex-wrap:wrap;gap:8px;
+}
+.listings-head h2{
+  font-family:var(--font-display);font-size:20px;letter-spacing:0.5px;
+}
+.listings-head .count{
+  font-family:var(--font-mono);font-size:12.5px;color:var(--steel);
+  background:#fff;padding:5px 12px;border-radius:999px;border:1px solid var(--line);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+
+/* Worker "tag" card — ticket-stub aesthetic */
+.card{
+  background:#fff;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+  border:1px solid var(--line);
+  animation:fadeUp .4s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.card-top{
+  padding:16px 16px 14px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.avatar{
+  width:52px;height:52px;border-radius:12px;
+  background:var(--ink);color:var(--amber);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:19px;font-weight:700;
+  flex-shrink:0;
+}
+.card-info{flex:1;min-width:0;}
+.card-info h3{font-size:16.5px;font-weight:700;margin-bottom:2px;}
+.badge-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.cat-badge{
+  font-size:10.5px;font-weight:700;letter-spacing:0.3px;
+  background:var(--paper-dim);color:var(--steel);
+  padding:3px 9px;border-radius:999px;text-transform:uppercase;
+}
+.verified{
+  font-size:10.5px;font-weight:700;color:#fff;
+  background:var(--green);padding:3px 9px;border-radius:999px;
+  display:flex;align-items:center;gap:3px;
+}
+.area-line{
+  font-size:12.5px;color:#666;margin-top:6px;
+  display:flex;align-items:center;gap:5px;
+}
+
+/* perforated divider */
+.perf{
+  position:relative;height:1px;
+  border-top:2px dashed var(--line);
+  margin:0 16px;
+}
+.perf::before,.perf::after{
+  content:'';position:absolute;top:-8px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--paper);
+}
+.perf::before{left:-24px;}
+.perf::after{right:-24px;}
+
+.card-meta{
+  display:flex;justify-content:space-between;
+  padding:12px 16px;font-size:12.5px;color:#555;
+}
+.card-meta .mono{font-family:var(--font-mono);color:var(--ink);font-weight:600;}
+
+.card-actions{
+  display:flex;gap:8px;padding:0 16px 16px;
+}
+.card-actions a{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 10px;border-radius:10px;
+  font-size:13px;font-weight:700;
+  transition:opacity .15s ease;
+}
+.card-actions a:active{opacity:0.8;}
+.btn-call{background:var(--steel);color:#fff;}
+.btn-whatsapp{background:#2FAE60;color:#fff;}
+.card-actions svg{width:16px;height:16px;}
+
+.stamp{
+  position:absolute;top:14px;right:14px;
+  width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--rust);color:var(--rust);
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(12deg);
+  font-family:var(--font-display);font-size:9px;font-weight:700;
+  text-align:center;line-height:1.1;opacity:0.85;
+}
+
+/* Loading / empty states */
+.state-box{
+  text-align:center;padding:60px 20px;color:#777;
+}
+.spinner{
+  width:34px;height:34px;border-radius:50%;
+  border:3px solid var(--line);border-top-color:var(--amber);
+  margin:0 auto 14px;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.skeleton{
+  background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);
+  background-size:200% 100%;animation:shimmer 1.4s infinite;
+  border-radius:14px;height:190px;
+}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* ============================================================
+   MODAL — Worker Registration
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;background:rgba(28,27,25,0.55);
+  display:none;align-items:flex-end;justify-content:center;
+  z-index:100;backdrop-filter:blur(2px);
+}
+.overlay.open{display:flex;}
+.modal{
+  background:var(--paper);
+  width:100%;max-width:520px;
+  border-radius:20px 20px 0 0;
+  max-height:88vh;overflow-y:auto;
+  padding:22px 20px 30px;
+  animation:slideUp .25s ease;
+}
+@media (min-width:640px){
+  .overlay{align-items:center;}
+  .modal{border-radius:20px;}
+}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.modal-head h2{font-family:var(--font-display);font-size:19px;}
+.close-btn{
+  width:32px;height:32px;border-radius:50%;background:var(--paper-dim);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.modal p.sub{font-size:13px;color:#777;margin-bottom:18px;}
+.field{margin-bottom:14px;}
+.field label{font-size:13px;font-weight:600;display:block;margin-bottom:6px;}
+.field input,.field select{
+  width:100%;padding:12px 14px;border:1.5px solid var(--line);
+  border-radius:10px;font-size:14.5px;background:#fff;
+}
+.field input:focus,.field select:focus{outline:2px solid var(--amber);}
+.field-row{display:flex;gap:10px;}
+.field-row .field{flex:1;}
+.submit-btn{
+  width:100%;background:var(--rust);color:#fff;
+  padding:14px;border-radius:12px;font-weight:700;font-size:15px;
+  margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s ease;
+}
+.submit-btn:hover{background:#96302a;}
+.submit-btn:disabled{opacity:0.6;}
+.form-msg{
+  text-align:center;font-size:13.5px;margin-top:12px;padding:10px;border-radius:10px;
+}
+.form-msg.ok{background:#E4F0E8;color:var(--green);}
+.form-msg.err{background:#F7E3E1;color:var(--rust);}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:var(--paper);
+  padding:13px 22px;border-radius:999px;font-size:13.5px;font-weight:600;
+  box-shadow:var(--shadow);z-index:200;
+  display:flex;align-items:center;gap:8px;
+  transition:transform .3s ease;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  max-width:1100px;margin:50px auto 0;padding:26px 20px 10px;
+  text-align:center;border-top:1px solid var(--line);
+}
+footer .tag-en{font-family:var(--font-display);font-size:13px;letter-spacing:1px;color:var(--steel);}
+footer .tag-ur{font-family:var(--font-urdu);font-size:15px;color:var(--rust);margin:6px 0 14px;}
+footer .credit{
+  font-size:11.5px;color:#999;letter-spacing:0.4px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+footer .credit .blink-dot{background:var(--amber);width:6px;height:6px;
+  box-shadow:0 0 0 0 rgba(232,163,61,0.7);animation:pulse2 1.6s infinite;}
+@keyframes pulse2{
+  0%{box-shadow:0 0 0 0 rgba(232,163,61,0.6);}
+  70%{box-shadow:0 0 0 6px rgba(232,163,61,0);}
+  100%{box-shadow:0 0 0 0 rgba(232,163,61,0);}
+}
+
+@media(max-width:480px){
+  .search-card{flex-direction:column;}
+  .search-card select,.search-card input,.search-card button{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP STATUS BAR ============ -->
+<div class="topbar">
+  <span class="blink-dot"></span>
+  <span>LIVE&nbsp;•&nbsp;Workers Online Right Now&nbsp;•&nbsp;فوری دستیاب</span>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="nav-row">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="108" fill="#1C1B19"/>
+        <polygon points="256,84 397,170 397,342 256,428 115,342 115,170" fill="none" stroke="#E8A33D" stroke-width="22" stroke-linejoin="round"/>
+        <polygon points="278,152 198,278 236,278 214,360 314,236 262,236 292,152" fill="#E8A33D"/>
+        <circle cx="388" cy="124" r="26" fill="#B23A2E"/>
+      </svg>
+      <div class="brand-text">
+        <div class="en">BHAI HAZIR HAI</div>
+        <div class="ur">بھائی حاضر ہے</div>
+      </div>
+    </div>
+    <button class="list-btn" onclick="openModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      List Yourself
+    </button>
+  </div>
+
+  <div class="hero">
+    <h1 class="ur">بھائی حاضر ہے</h1>
+    <h1 class="en">BHAI HAZIR HAI</h1>
+    <p>
+      Ghar baithay, hunarmand hazir. Mistri, Plumber, Electrician — sab ek jagah.
+      <span class="urdu">آپ کے قریب، آپ کی خدمت کے لیے تیار</span>
+    </p>
+
+    <div class="search-card">
+      <select id="categorySelect">
+        <option value="">Har Category</option>
+      </select>
+      <input type="text" id="areaInput" placeholder="Apna area likhein (e.g. Model Town)">
+      <button onclick="applyFilters()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CATEGORY CHIPS ============ -->
+<div class="categories" id="categoryChips"></div>
+
+<!-- ============ LISTINGS ============ -->
+<section class="listings-section">
+  <div class="listings-head">
+    <h2>Available Hunarmand <span class="urdu" style="font-size:14px;color:#777;">دستیاب کاریگر</span></h2>
+    <span class="count" id="resultCount">Loading...</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="tag-en">GHAR BAITHAY, HUNARMAND HAZIR</div>
+  <div class="tag-ur urdu">آپ کی ضرورت، ہماری ذمہ داری</div>
+  <div class="credit"><span class="blink-dot"></span> Prepared by Hasan Khan</div>
+</footer>
+
+<!-- ============ REGISTRATION MODAL ============ -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>List Your Service</h2>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <p class="sub">Apni profile banayein — customers seedha call/WhatsApp karenge. <span class="urdu">اپنی پروفائل بنائیں</span></p>
+
+    <form id="regForm" onsubmit="submitWorker(event)">
+      <div class="field">
+        <label>Full Name / پورا نام</label>
+        <input type="text" id="f_name" required placeholder="e.g. Ahmed Khan">
+      </div>
+      <div class="field">
+        <label>Category / کام کی قسم</label>
+        <select id="f_category" required></select>
+      </div>
+      <div class="field">
+        <label>Area / علاقہ</label>
+        <input type="text" id="f_area" required placeholder="e.g. Johar Town, Lahore">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" id="f_phone" required placeholder="03XX-XXXXXXX">
+        </div>
+        <div class="field">
+          <label>WhatsApp</label>
+          <input type="tel" id="f_whatsapp" required placeholder="03XX-XXXXXXX">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Experience (years)</label>
+          <input type="text" id="f_experience" placeholder="e.g. 5">
+        </div>
+        <div class="field">
+          <label>Rate (approx)</label>
+          <input type="text" id="f_rate" placeholder="e.g. Rs 800/visit">
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Profile</button>
+      <div id="formMsg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"><span class="dot"></span><span id="toastText"></span></div>
+
+<script>
+/* ============================================================
+   ⚠️ IMPORTANT — Paste your Google Apps Script Web App URL below
+   ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycby1ojsML5yk1An97A3tLwW1JWKxVwbTh4EJi9Jszju6G8HQQMx-3Orx9Qr0rrGCerTBHA/exec";
+
+/* ============================================================
+   CATEGORIES — icon (inline SVG paths), English + Urdu labels
+   ============================================================ */
+const CATEGORIES = [
+  { key:"Plumber", en:"Plumber", ur:"پلمبر",
+    icon:`<circle cx="12" cy="12" r="10"/><path d="M7 15c1-3 2-5 5-5s4 2 5 5" /><path d="M9 9V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>` },
+  { key:"Electrician", en:"Electrician", ur:"الیکٹریشن",
+    icon:`<polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2"/>` },
+  { key:"Mistri", en:"Mistri", ur:"مستری",
+    icon:`<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>` },
+  { key:"Painter", en:"Painter", ur:"پینٹر",
+    icon:`<path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z"/><path d="M9 8c-2 3-4 3.5-7 4l8 8c.5-3 1-5 4-7"/>` },
+  { key:"Carpenter", en:"Carpenter", ur:"بڑھئی",
+    icon:`<rect x="2" y="2" width="20" height="8" rx="1" transform="rotate(20 12 6)"/><path d="M4 20l6-6"/>` },
+  { key:"AC Mechanic", en:"AC Mechanic", ur:"اے سی میکینک",
+    icon:`<line x1="12" y1="2" x2="12" y2="22"/><line x1="17.5" y1="4.5" x2="6.5" y2="19.5"/><line x1="19.5" y1="17.5" x2="4.5" y2="6.5"/>` },
+  { key:"Tailor", en:"Tailor", ur:"درزی",
+    icon:`<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>` },
+];
+
+let allWorkers = [];
+let activeCategory = "";
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  renderCategoryChips();
+  populateCategoryDropdowns();
+  fetchWorkers();
+  registerServiceWorker();
+});
+
+function renderCategoryChips(){
+  const wrap = document.getElementById("categoryChips");
+  wrap.innerHTML = CATEGORIES.map(c => `
+    <button class="cat-chip" data-key="${c.key}" onclick="selectCategory('${c.key}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.icon}</svg>
+      <span class="en">${c.en}</span>
+      <span class="ur urdu">${c.ur}</span>
+    </button>
+  `).join("");
+}
+
+function populateCategoryDropdowns(){
+  const opts = CATEGORIES.map(c => `<option value="${c.key}">${c.en} / ${c.ur}</option>`).join("");
+  document.getElementById("categorySelect").innerHTML += opts;
+  document.getElementById("f_category").innerHTML = `<option value="">Select</option>` + opts;
+}
+
+function selectCategory(key){
+  activeCategory = (activeCategory === key) ? "" : key;
+  document.querySelectorAll(".cat-chip").forEach(chip=>{
+    chip.classList.toggle("active", chip.dataset.key === activeCategory);
+  });
+  document.getElementById("categorySelect").value = activeCategory;
+  fetchWorkers();
+}
+
+function applyFilters(){
+  activeCategory = document.getElementById("categorySelect").value;
+  document.querySelectorAll(".cat-chip").forEach(chip=>{
+    chip.classList.toggle("active", chip.dataset.key === activeCategory);
+  });
+  fetchWorkers();
+}
+
+/* ============================================================
+   FETCH WORKERS FROM GOOGLE SHEETS BACKEND
+   ============================================================ */
+async function fetchWorkers(){
+  const grid = document.getElementById("grid");
+  const countEl = document.getElementById("resultCount");
+  grid.innerHTML = Array(6).fill('<div class="skeleton"></div>').join("");
+  countEl.textContent = "Loading...";
+
+  try{
+    const area = document.getElementById("areaInput").value.trim();
+    const params = new URLSearchParams({ action:"list" });
+    if(activeCategory) params.set("category", activeCategory);
+    if(area) params.set("area", area);
+
+    const res = await fetch(`${API_URL}?${params.toString()}`);
+    const json = await res.json();
+
+    if(!json.success) throw new Error(json.error || "Unknown error");
+
+    allWorkers = json.data;
+    renderWorkers(allWorkers);
+    countEl.textContent = `${allWorkers.length} found`;
+  }catch(err){
+    grid.innerHTML = `
+      <div class="state-box" style="grid-column:1/-1;">
+        <p><strong>Connection issue.</strong></p>
+        <p style="font-size:13px;margin-top:6px;">Backend link check karein ya thodi dair mein try karein.<br>${err.message}</p>
+      </div>`;
+    countEl.textContent = "—";
+  }
+}
+
+function initials(name){
+  return (name||"?").split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+}
+
+function renderWorkers(list){
+  const grid = document.getElementById("grid");
+  if(!list.length){
+    grid.innerHTML = `
+      <div class="state-box" style="grid-column:1/-1;">
+        <p><strong>Koi worker nahi mila is filter ke sath.</strong></p>
+        <p class="urdu" style="margin-top:6px;">اس علاقے میں ابھی کوئی کاریگر دستیاب نہیں</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map((w,i) => {
+    const isVerified = String(w.Verified).toLowerCase() === "yes";
+    const whatsappNum = String(w.WhatsApp||"").replace(/[^0-9]/g,"");
+    const waMsg = encodeURIComponent(`Assalam o Alaikum, mujhe ${w.Category} chahiye ${w.Area} mein.`);
+    return `
+    <div class="card" style="animation-delay:${i*0.03}s">
+      <div class="stamp">${isVerified ? "VERIFIED<br>HAZIR" : "HAZIR<br>NOW"}</div>
+      <div class="card-top">
+        <div class="avatar">${initials(w.Name)}</div>
+        <div class="card-info">
+          <h3>${w.Name}</h3>
+          <div class="badge-row">
+            <span class="cat-badge">${w.Category}</span>
+            ${isVerified ? `<span class="verified">✓ Verified</span>` : ``}
+          </div>
+          <div class="area-line">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${w.Area}
+          </div>
+        </div>
+      </div>
+      <div class="perf"></div>
+      <div class="card-meta">
+        <span>Experience: <span class="mono">${w.Experience || "—"}</span></span>
+        <span>Rate: <span class="mono">${w.Rate || "Ask"}</span></span>
+      </div>
+      <div class="card-actions">
+        <a class="btn-call" href="tel:${w.Phone}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call
+        </a>
+        <a class="btn-whatsapp" target="_blank" href="https://wa.me/${whatsappNum}?text=${waMsg}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01a7.94 7.94 0 0 0 5.54-13.58zm-5.55 12.2h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.65.67-2.44-.16-.25a6.6 6.6 0 1 1 12.25-3.5 6.56 6.56 0 0 1-6.65 6.6zm3.6-4.93c-.2-.1-1.17-.58-1.35-.64s-.31-.1-.45.1-.51.64-.63.77-.23.15-.43.05a5.4 5.4 0 0 1-1.6-.98 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.33.37.37 0 0 0 0-.35c-.05-.1-.45-1.08-.62-1.48s-.33-.33-.45-.34h-.39a.74.74 0 0 0-.54.25 2.26 2.26 0 0 0-.7 1.68 3.9 3.9 0 0 0 .82 2.08 9 9 0 0 0 3.45 3.05c.48.21.86.33 1.15.42a2.77 2.77 0 0 0 1.27.08 2.08 2.08 0 0 0 1.37-.96 1.7 1.7 0 0 0 .12-.97c-.05-.09-.18-.14-.38-.24z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ============================================================
+   MODAL CONTROL
+   ============================================================ */
+function openModal(){ document.getElementById("overlay").classList.add("open"); }
+function closeModal(){ document.getElementById("overlay").classList.remove("open"); }
+document.getElementById("overlay").addEventListener("click", (e)=>{
+  if(e.target.id === "overlay") closeModal();
+});
+
+/* ============================================================
+   SUBMIT NEW WORKER
+   ============================================================ */
+async function submitWorker(e){
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("formMsg");
+  msg.innerHTML = "";
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
+
+  const payload = {
+    Name: document.getElementById("f_name").value.trim(),
+    Category: document.getElementById("f_category").value,
+    Area: document.getElementById("f_area").value.trim(),
+    Phone: document.getElementById("f_phone").value.trim(),
+    WhatsApp: document.getElementById("f_whatsapp").value.trim(),
+    Experience: document.getElementById("f_experience").value.trim(),
+    Rate: document.getElementById("f_rate").value.trim(),
+  };
+
+  try{
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids CORS preflight with Apps Script
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+
+    if(!json.success) throw new Error(json.error || "Submission failed");
+
+    msg.innerHTML = `<div class="form-msg ok">✓ Profile submit ho gayi! Jald hi list mein aayegi.</div>`;
+    document.getElementById("regForm").reset();
+    showToast("Profile submitted successfully!");
+    setTimeout(()=>{ closeModal(); fetchWorkers(); }, 1200);
+  }catch(err){
+    msg.innerHTML = `<div class="form-msg err">Error: ${err.message}</div>`;
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Submit Profile";
+  }
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function showToast(text){
+  const toast = document.getElementById("toast");
+  document.getElementById("toastText").textContent = text;
+  toast.classList.add("show");
+  setTimeout(()=> toast.classList.remove("show"), 3000);
+}
+
+/* ============================================================
+   PWA SERVICE WORKER
+   ============================================================ */
+function registerServiceWorker(){
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+}
+</script>
+</body>
+</html>
